@@ -1,0 +1,40 @@
+{
+  "name": "Network Toolkit Pro",
+  "short_name": "NetTools",
+  "description": "Professional network analysis and security toolkit",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f2027",
+  "theme_color": "#667eea",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iOTYiIGN5PSI5NiIgcj0iOTYiIGZpbGw9IiM2NjdlZWEiLz48cGF0aCBkPSJNMTE4LjUgNzQuNUwxMjQgODBWNjRIMTYwbDUuNSA1LjVMMTYwIDk2bDUuNSA1LjVMMTYwIDEyOHYtMTZoLTE2bDUuNS01LjVMMTI0IDk2bDUuNS01LjVaIiBmaWxsPSJ3aGl0ZSIvPjxwYXRoIGQ9Ik03NCAxMTcuNUw2OCAxMTJ2MTZINDBsLTUuNS01LjVMNDAgOTZsLTUuNS01LjVMMzAgNjRoMTZsLTUuNSA1LjVMNTYgOTZsLTUuNSA1LjVaIiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPg==",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/686/686589.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["utilities", "productivity", "network"],
+  "shortcuts": [
+    {
+      "name": "Scan Networks",
+      "short_name": "Scan",
+      "description": "Quick network scan",
+      "url": "./index.html#scanner"
+    },
+    {
+      "name": "Security Audit",
+      "short_name": "Audit",
+      "description": "Run security audit",
+      "url": "./index.html#security"
+    }
+  ],
+  "permissions": [],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

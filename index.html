@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Toolkit Pro</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="logo">
+            <i class="fas fa-wifi"></i>
+            <span>NetTools Pro</span>
+        </div>
+        <ul class="nav-links">
+            <li class="active" data-page="dashboard"><i class="fas fa-home"></i> Dashboard</li>
+            <li data-page="scanner"><i class="fas fa-search"></i> Network Scanner</li>
+            <li data-page="analyzer"><i class="fas fa-chart-line"></i> Signal Analyzer</li>
+            <li data-page="mapper"><i class="fas fa-sitemap"></i> Network Mapper</li>
+            <li data-page="portscanner"><i class="fas fa-plug"></i> Port Scanner</li>
+            <li data-page="sniffer"><i class="fas fa-binoculars"></i> Packet Sniffer</li>
+            <li data-page="security"><i class="fas fa-shield-alt"></i> Security Audit</li>
+            <li data-page="tools"><i class="fas fa-tools"></i> Tools</li>
+            <li data-page="settings"><i class="fas fa-cog"></i> Settings</li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content">
+        <!-- Dashboard -->
+        <section id="dashboard" class="page active">
+            <h1><i class="fas fa-tachometer-alt"></i> Dashboard</h1>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-network-wired"></i>
+                    <h3>Network Status</h3>
+                    <p id="network-status">Connected</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-signal"></i>
+                    <h3>Signal Strength</h3>
+                    <div class="signal-bar">
+                        <div class="signal-level" id="signal-level" style="width: 75%"></div>
+                    </div>
+                    <p id="signal-text">-45 dBm</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Security Score</h3>
+                    <p id="security-score">85/100</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-bolt"></i>
+                    <h3>Speed Test</h3>
+                    <button onclick="runSpeedTest()" class="btn-test">Test Now</button>
+                </div>
+            </div>
+            
+            <div class="quick-actions">
+                <h2>Quick Actions</h2>
+                <div class="action-buttons">
+                    <button class="btn-action" onclick="showPage('scanner')">
+                        <i class="fas fa-search"></i> Scan Networks
+                    </button>
+                    <button class="btn-action" onclick="showPasswordManager()">
+                        <i class="fas fa-key"></i> Password Manager
+                    </button>
+                    <button class="btn-action" onclick="showPage('security')">
+                        <i class="fas fa-shield-alt"></i> Security Audit
+                    </button>
+                    <button class="btn-action" onclick="generateQRCode()">
+                        <i class="fas fa-qrcode"></i> WiFi QR Code
+                    </button>
+                </div>
+            </div>
+            
+            <div class="recent-scans">
+                <h2>Recent Network Scans</h2>
+                <div id="recent-networks"></div>
+            </div>
+        </section>
+
+        <!-- Network Scanner -->
+        <section id="scanner" class="page">
+            <h1><i class="fas fa-search"></i> Network Scanner</h1>
+            <div class="scanner-controls">
+                <button onclick="startScan()" class="btn-scan">
+                    <i class="fas fa-play"></i> Start Scan
+                </button>
+                <button onclick="stopScan()" class="btn-stop">
+                    <i class="fas fa-stop"></i> Stop Scan
+                </button>
+                <select id="scan-type">
+                    <option value="quick">Quick Scan</option>
+                    <option value="deep">Deep Scan</option>
+                    <option value="continuous">Continuous Scan</option>
+                </select>
+            </div>
+            
+            <div class="scan-progress">
+                <div class="progress-bar" id="scan-progress-bar"></div>
+                <div id="scan-status">Ready to scan</div>
+            </div>
+            
+            <div class="networks-list" id="networks-list">
+                <!-- Networks will appear here -->
+            </div>
+            
+            <div class="network-details" id="network-details">
+                <h3>Network Details</h3>
+                <div id="details-content"></div>
+            </div>
+        </section>
+
+        <!-- Signal Analyzer -->
+        <section id="analyzer" class="page">
+            <h1><i class="fas fa-chart-line"></i> Signal Analyzer</h1>
+            <div class="analyzer-container">
+                <canvas id="signalChart"></canvas>
+                <div class="signal-info">
+                    <h3>Signal Information</h3>
+                    <p>Current Strength: <span id="current-strength">-45 dBm</span></p>
+                    <p>Channel: <span id="current-channel">6</span></p>
+                    <p>Noise Level: <span id="noise-level">-92 dBm</span></p>
+                    <p>Signal Quality: <span id="signal-quality">Excellent</span></p>
+                    <button onclick="startSignalMonitoring()" class="btn-action">
+                        <i class="fas fa-play"></i> Start Monitoring
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Network Mapper -->
+        <section id="mapper" class="page">
+            <h1><i class="fas fa-sitemap"></i> Network Mapper</h1>
+            <div class="mapper-controls">
+                <button onclick="startDiscovery()" class="btn-scan">
+                    <i class="fas fa-search"></i> Discover Devices
+                </button>
+                <button onclick="exportNetworkMap()" class="btn-action">
+                    <i class="fas fa-download"></i> Export Map
+                </button>
+                <select id="scan-range">
+                    <option value="192.168.1.1-254">192.168.1.*</option>
+                    <option value="192.168.0.1-254">192.168.0.*</option>
+                    <option value="10.0.0.1-254">10.0.0.*</option>
+                </select>
+            </div>
+            
+            <div class="devices-grid" id="devices-grid">
+                <!-- Devices will appear here -->
+            </div>
+            
+            <div class="network-topology">
+                <h3>Network Topology</h3>
+                <div id="topology-canvas">Visual map will appear here</div>
+            </div>
+        </section>
+
+        <!-- Port Scanner -->
+        <section id="portscanner" class="page">
+            <h1><i class="fas fa-plug"></i> Port Scanner</h1>
+            <div class="portscanner-controls">
+                <input type="text" id="target-ip" placeholder="Target IP (e.g., 192.168.1.1)" value="192.168.1.1">
+                <input type="text" id="port-range" placeholder="Ports (e.g., 1-100)" value="1-100">
+                <button onclick="scanPorts()" class="btn-scan">
+                    <i class="fas fa-bolt"></i> Scan Ports
+                </button>
+                <button onclick="stopPortScan()" class="btn-stop">
+                    <i class="fas fa-stop"></i> Stop
+                </button>
+            </div>
+            
+            <div class="scan-progress">
+                <div class="progress-bar" id="port-scan-progress"></div>
+                <div id="port-scan-status">Ready to scan</div>
+            </div>
+            
+            <div class="ports-results">
+                <h3>Open Ports Found</h3>
+                <table id="ports-table">
+                    <thead>
+                        <tr>
+                            <th>Port</th>
+                            <th>Service</th>
+                            <th>Status</th>
+                            <th>Protocol</th>
+                            <th>Security</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Results will appear here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Packet Sniffer -->
+        <section id="sniffer" class="page">
+            <h1><i class="fas fa-binoculars"></i> Packet Sniffer (Educational)</h1>
+            <div class="disclaimer">
+                <i class="fas fa-exclamation-triangle"></i>
+                <strong>Educational Purpose Only:</strong> This tool shows packet structure for learning.
+                Packet sniffing on networks you don't own is illegal.
+            </div>
+            
+            <div class="sniffer-controls">
+                <button onclick="startSniffing()" class="btn-scan">
+                    <i class="fas fa-play"></i> Start Sniffing
+                </button>
+                <button onclick="stopSniffing()" class="btn-stop">
+                    <i class="fas fa-stop"></i> Stop
+                </button>
+                <button onclick="clearPackets()" class="btn-action">
+                    <i class="fas fa-trash"></i> Clear
+                </button>
+                <select id="filter-protocol">
+                    <option value="all">All Protocols</option>
+                    <option value="http">HTTP</option>
+                    <option value="dns">DNS</option>
+                    <option value="tcp">TCP</option>
+                    <option value="udp">UDP</option>
+                </select>
+            </div>
+            
+            <div class="packet-stats">
+                <div class="stat">Packets: <span id="packet-count">0</span></div>
+                <div class="stat">HTTP: <span id="http-count">0</span></div>
+                <div class="stat">DNS: <span id="dns-count">0</span></div>
+                <div class="stat">Data Rate: <span id="data-rate">0 KB/s</span></div>
+            </div>
+            
+            <div class="packet-container">
+                <div class="packet-list" id="packet-list">
+                    <!-- Packets will appear here -->
+                </div>
+                <div class="packet-details" id="packet-details">
+                    <!-- Packet details will appear here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Security Audit -->
+        <section id="security" class="page">
+            <h1><i class="fas fa-shield-alt"></i> Security Audit</h1>
+            <div class="security-controls">
+                <button onclick="runFullAudit()" class="btn-scan">
+                    <i class="fas fa-shield-alt"></i> Run Full Audit
+                </button>
+                <button onclick="checkPasswordStrength()" class="btn-action">
+                    <i class="fas fa-key"></i> Check Passwords
+                </button>
+            </div>
+            
+            <div class="audit-results" id="audit-results">
+                <!-- Results will appear here -->
+            </div>
+        </section>
+
+        <!-- Tools -->
+        <section id="tools" class="page">
+            <h1><i class="fas fa-tools"></i> Tools</h1>
+            <div class="tools-grid">
+                <div class="tool-card" onclick="openPasswordGenerator()">
+                    <i class="fas fa-key"></i>
+                    <h3>Password Generator</h3>
+                    <p>Generate strong WiFi passwords</p>
+                </div>
+                <div class="tool-card" onclick="openQRGenerator()">
+                    <i class="fas fa-qrcode"></i>
+                    <h3>QR Code Generator</h3>
+                    <p>Create WiFi QR codes</p>
+                </div>
+                <div class="tool-card" onclick="openSubnetCalculator()">
+                    <i class="fas fa-calculator"></i>
+                    <h3>Subnet Calculator</h3>
+                    <p>Calculate subnet masks</p>
+                </div>
+                <div class="tool-card" onclick="openMACLookup()">
+                    <i class="fas fa-address-card"></i>
+                    <h3>MAC Address Lookup</h3>
+                    <p>Find vendor from MAC</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings -->
+        <section id="settings" class="page">
+            <h1><i class="fas fa-cog"></i> Settings</h1>
+            <div class="settings-container">
+                <div class="setting-item">
+                    <label>Auto Scan Interval:</label>
+                    <select id="scan-interval">
+                        <option value="0">Disabled</option>
+                        <option value="30000">30 seconds</option>
+                        <option value="60000" selected>1 minute</option>
+                        <option value="300000">5 minutes</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label>Theme:</label>
+                    <select id="theme-select">
+                        <option value="dark" selected>Dark</option>
+                        <option value="light">Light</option>
+                        <option value="auto">Auto</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <button onclick="clearAllData()" class="btn-action">
+                        <i class="fas fa-trash"></i> Clear All Data
+                    </button>
+                </div>
+                <div class="setting-item">
+                    <button onclick="exportAllData()" class="btn-action">
+                        <i class="fas fa-download"></i> Export All Data
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for Password Manager -->
+    <div id="password-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2><i class="fas fa-key"></i> WiFi Password Manager</h2>
+            <div class="password-form">
+                <input type="text" id="network-name" placeholder="Network Name (SSID)">
+                <input type="password" id="network-password" placeholder="Password">
+                <button onclick="savePassword()" class="btn-action">Save Password</button>
+            </div>
+            <div id="saved-networks"></div>
+        </div>
+    </div>
+
+    <!-- Modal for Password Generator -->
+    <div id="password-gen-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2><i class="fas fa-key"></i> Password Generator</h2>
+            <div class="password-gen-options">
+                <label><input type="checkbox" id="uppercase" checked> Uppercase Letters</label>
+                <label><input type="checkbox" id="lowercase" checked> Lowercase Letters</label>
+                <label><input type="checkbox" id="numbers" checked> Numbers</label>
+                <label><input type="checkbox" id="symbols" checked> Symbols</label>
+                <input type="range" id="length-slider" min="8" max="32" value="16">
+                <span id="length-value">16 characters</span>
+            </div>
+            <div class="generated-password">
+                <input type="text" id="generated-password" readonly>
+                <button onclick="copyPassword()" class="btn-action">Copy</button>
+            </div>
+            <button onclick="generateNewPassword()" class="btn-scan">Generate New</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script src="mapper.js"></script>
+    <script src="scanner.js"></script>
+    <script src="sniffer.js"></script>
+    <script src="security.js"></script>
+    <script src="tools.js"></script>
+    
+    <script>
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Chart.js for signal analyzer
+            const ctx = document.getElementById('signalChart').getContext('2d');
+            window.signalChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Signal Strength (dBm)',
+                        data: [],
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            min: -100,
+                            max: -30,
+                            reverse: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + ' dBm';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
